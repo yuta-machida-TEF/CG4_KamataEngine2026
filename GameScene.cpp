@@ -29,6 +29,7 @@ void GameScene::Initialize()
 	model2 = Model2::CreateSquare(1);
 }
 
+
 void GameScene::Update()
 {
 	//3Dモデルを更新
