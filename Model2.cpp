@@ -828,9 +828,12 @@ Model2* Model2::CreateSquare(int max) {
 	vertices.resize(kNumVertices);
 	indices.resize(kNumIndices);
 
+
+
 	for (int i = 0; i < max; i++) {
 		int index = i * 4;
 
+	  
 		// 左下
 		vertices[index + 0].pos = {i * 2 + -1.0f, -1.0f, 0.0f};
 		vertices[index + 0].uv = {0, 1};
