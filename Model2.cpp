@@ -825,13 +825,15 @@ Model2* Model2::CreateSquare(int max) {
 	// インデックス数
 	const uint32_t kNumIndices = 6 * max;
 
+	const uint32_t division = 4;
+
+	float sin = 3.14 * 2;
+	float cos = 3.14 * 2;
+
 	vertices.resize(kNumVertices);
 	indices.resize(kNumIndices);
 
-
-
 	for (int i = 0; i < max; i++) {
-				
 		int index = i * 4;
 
 		// 左下
