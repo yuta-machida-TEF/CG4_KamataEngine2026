@@ -814,44 +814,40 @@ void ModelCommon2::InitializeGraphicsPipeline() {
 }
 
 // 四角形モデルの生成
-Model2* Model2::CreateSquare(int max) {
+Model2* Model2::CreateSquare(const int max) {
 	// メモリ確保
 	Model2* instance = new Model2;
 	std::vector<Mesh::VertexPosNormalUv> vertices;
 	std::vector<uint32_t> indices;
+
+	const uint32_t kRingDivide = max; 
+	const float kOuterRadius = 1.0f;
+	const float kInnerRadius = 0.2f;
+	const float radianPerDivide = 2.0f * std::numbers::pi_v<float> / float(max);
 
 	// 頂点数
 	const uint32_t kNumVertices = 4 * max;
 	// インデックス数
 	const uint32_t kNumIndices = 6 * max;
 
-	const uint32_t division = 4;
-
-	float sin = 3.14 * 2;
-	float cos = 3.14 * 2;
-
 	vertices.resize(kNumVertices);
 	indices.resize(kNumIndices);
 
-	for (int i = 0; i < max; i++) {
-		int index = i * 4;
+	for (uint32_t index = 0; index < kRingDivide; index++) {
+		
+		float sin = std::sin(index * radianPerDivide);
+		float cos = std::cos(index * radianPerDivide);
+		float sinNext = std::sin((index + 1) * radianPerDivide);
+		float cosNext = std::cos((index + 1) * radianPerDivide);
+		float u = float(index) / float(max);
+		float uNext = float(index + 1) / float(max);
+		//postionとuv,normalは必要なら+zを設定する
+		
+		((-sin * kOuterRadius, cos * kOuterRadius, 0.0f, 1.0f),(u, 0.0f));
+		((- sinNext * kOuterRadius, cosNext * kOuterRadius,0.0f,1.0f),(uNext,0.0f) );
+		((-sin * kInnerRadius,cos * kInnerRadius,0.0f,1.0f),(u,1.0f));
+		((-sinNext * kInnerRadius,cosNext * kInnerRadius,0.0f,1.0f),(uNext,1.0f));
 
-		// 左下
-		vertices[index + 0].pos = {i * 2 + -1.0f, -1.0f, 0.0f};
-		vertices[index + 0].uv = {0, 1};
-		vertices[index + 0].normal = {0, 0, 1};
-		// 左上
-		vertices[index + 1].pos = {i * 2 + -1.0f, 1.0f, 0.0f};
-		vertices[index + 1].uv = {0, 0};
-		vertices[index + 1].normal = {0, 0, 1};
-		// 右下
-		vertices[index + 2].pos = {i * 2 + 1.0f, -1.0f, 0.0f};
-		vertices[index + 2].uv = {1, 1};
-		vertices[index + 2].normal = {0, 0, 1};
-		// 右上
-		vertices[index + 3].pos = {i * 2 + 1.0f, 1.0f, 0.0f};
-		vertices[index + 3].uv = {1, 0};
-		vertices[index + 3].normal = {0, 0, 1};
 	}
 
 	// インデックス
