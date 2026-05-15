@@ -820,35 +820,54 @@ Model2* Model2::CreateSquare(const int max) {
 	std::vector<Mesh::VertexPosNormalUv> vertices;
 	std::vector<uint32_t> indices;
 
-	const uint32_t kRingDivide = max; 
-	const float kOuterRadius = 1.0f;
-	const float kInnerRadius = 0.2f;
-	const float radianPerDivide = 2.0f * std::numbers::pi_v<float> / float(max);
-
 	// 頂点数
 	const uint32_t kNumVertices = 4 * max;
 	// インデックス数
 	const uint32_t kNumIndices = 6 * max;
+	//角度
+	float angle = 3.14f * 2.0f / max;
+	//内側
+	float inside = 2;
+	//外側
+	float outside = 4;
 
 	vertices.resize(kNumVertices);
 	indices.resize(kNumIndices);
 
-	for (uint32_t index = 0; index < kRingDivide; index++) {
-		
-		float sin = std::sin(index * radianPerDivide);
-		float cos = std::cos(index * radianPerDivide);
-		float sinNext = std::sin((index + 1) * radianPerDivide);
-		float cosNext = std::cos((index + 1) * radianPerDivide);
-		float u = float(index) / float(max);
-		float uNext = float(index + 1) / float(max);
-		//postionとuv,normalは必要なら+zを設定する
-		
-		((-sin * kOuterRadius, cos * kOuterRadius, 0.0f, 1.0f),(u, 0.0f));
-		((- sinNext * kOuterRadius, cosNext * kOuterRadius,0.0f,1.0f),(uNext,0.0f) );
-		((-sin * kInnerRadius,cos * kInnerRadius,0.0f,1.0f),(u,1.0f));
-		((-sinNext * kInnerRadius,cosNext * kInnerRadius,0.0f,1.0f),(uNext,1.0f));
+	for (int index = 0; index < max; index++) {
 
+		int vertex = index * 4;
+		float x = -cos(index * angle);
+		float y = sin(index * angle);
+		float x2 = -cos((index + 1) * angle);
+		float y2 = sin((index + 1) * angle);
+		float u = index * 1.0f / max;
+		float uNext = float(index + 1) * 1.0f / max;
+		// postionとuv,normalは必要なら+zを設定する
+
+		// 左上
+		vertices[vertex + 0].pos = {x * outside,y * outside, 0.0f};
+		vertices[vertex + 0].uv = {u, 0.0f};
+		vertices[vertex + 0].normal = {0.0f, 0.0f, 1.0f};
+
+		//右上
+		vertices[vertex + 1].pos = {x2 * outside, y2 * outside, 0.0f};
+		vertices[vertex + 1].uv = {uNext, 0.0f};
+		vertices[vertex + 1].normal = {0.0f, 0.0f, 1.0f};
+
+		//左下
+		vertices[vertex + 2].pos = {x * inside,y * inside, 0.0f};
+		vertices[vertex + 2].uv = {u, 1.0f};
+		vertices[vertex + 2].normal = {0.0f, 0.0f, 1.0f};
+
+		//右下
+		vertices[vertex + 3].pos = {x2 * outside, y2 * outside, 0.0f};
+		vertices[vertex + 3].uv = {uNext, 1.0f};
+		vertices[vertex + 3].normal = {0.0f, 0.0f, 1.0f};
+		
 	}
+
+
 
 	// インデックス
 	for (int i = 0; i < max; i++) {
