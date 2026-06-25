@@ -748,14 +748,14 @@ void ModelCommon2::InitializeGraphicsPipeline() {
 	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
 
 	// 加算合成
-	// blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
-	// blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
-	// blenddesc.DestBlend = D3D12_BLEND_ONE;
+	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
+	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
+	blenddesc.DestBlend = D3D12_BLEND_ONE;
 
 	// 減算合成
-	// blenddesc.BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
-	// blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
-	// blenddesc.DestBlend = D3D12_BLEND_ONE
+	//blenddesc.BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
+	//blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
+	//blenddesc.DestBlend = D3D12_BLEND_ONE;
 
 	// 共通設定
 	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
@@ -861,7 +861,7 @@ Model2* Model2::CreateSquare(const int max) {
 		vertices[vertex + 2].normal = {0.0f, 0.0f, 1.0f};
 
 		//右下
-		vertices[vertex + 3].pos = {x2 * outside, y2 * outside, 0.0f};
+		vertices[vertex + 3].pos = {x2 * inside, y2 * inside, 0.0f};
 		vertices[vertex + 3].uv = {uNext, 1.0f};
 		vertices[vertex + 3].normal = {0.0f, 0.0f, 1.0f};
 		
